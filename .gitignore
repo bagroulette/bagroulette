@@ -1,0 +1,27 @@
+# Laravel
+backend/.env
+backend/vendor/
+backend/storage/logs/*
+backend/storage/framework/cache/*
+backend/storage/framework/sessions/*
+backend/storage/framework/views/*
+backend/bootstrap/cache/*
+backend/node_modules/
+
+# Next.js
+frontend/.env.local
+frontend/.env
+frontend/node_modules/
+frontend/.next/
+frontend/.vercel/
+
+# Keys & secrets
+*.json.key
+*treasury*.json
+/tmp/
+sign_and_send.js
+transfer_sol.js
+*.keypair
+
+# OS
+.DS_Store

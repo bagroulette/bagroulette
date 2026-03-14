@@ -1,0 +1,113 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: 'Cinzel Decorative', serif;
+  --font-body:    'Space Grotesk', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+
+  --gold:         #D4AF37;
+  --gold-light:   #F0D060;
+  --gold-dark:    #9A7B1C;
+  --purple:       #4B2E83;
+  --purple-light: #6B4CA3;
+  --dark:         #0A0812;
+  --navy:         #0D0B1A;
+  --surface:      #12102A;
+  --surface-2:    #1A1830;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--dark);
+  color: #fff;
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar       { width: 4px; }
+::-webkit-scrollbar-track { background: var(--dark); }
+::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 2px; }
+
+/* ── Roulette Wheel ── */
+.wheel-segment {
+  transform-origin: center;
+  transition: transform 0.1s ease;
+}
+
+@keyframes wheelSpin {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(var(--final-rotation)); }
+}
+
+.spinning { animation: wheelSpin var(--spin-duration, 6s) cubic-bezier(0.17, 0.67, 0.12, 0.99) forwards; }
+
+/* ── Gold glow ── */
+.glow-gold { text-shadow: 0 0 20px rgba(212,175,55,0.8), 0 0 40px rgba(212,175,55,0.4); }
+.glow-box  { box-shadow:  0 0 30px rgba(212,175,55,0.3), inset 0 1px 0 rgba(212,175,55,0.2); }
+
+/* ── Glass card ── */
+.glass {
+  background:    rgba(255,255,255,0.04);
+  backdrop-filter: blur(12px);
+  border:        1px solid rgba(212,175,55,0.15);
+  border-radius: 16px;
+}
+
+/* ── Gradient text ── */
+.text-gradient-gold {
+  background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Ticker ── */
+.ticker-wrap {
+  overflow: hidden;
+  white-space: nowrap;
+  border-top:    1px solid rgba(212,175,55,0.2);
+  border-bottom: 1px solid rgba(212,175,55,0.2);
+}
+.ticker-inner { display: inline-block; animation: ticker 40s linear infinite; }
+
+/* ── Wallet adapter overrides ── */
+.wallet-adapter-button {
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold)) !important;
+  color: #000 !important;
+  font-family: var(--font-body) !important;
+  font-weight: 700 !important;
+  border-radius: 8px !important;
+  border: none !important;
+  padding: 10px 20px !important;
+  font-size: 14px !important;
+}
+.wallet-adapter-button:hover { opacity: 0.9 !important; }
+.wallet-adapter-modal-wrapper { background: var(--surface) !important; border: 1px solid rgba(212,175,55,0.3) !important; }
+
+/* ── Countdown ── */
+.countdown-digit {
+  display: inline-block;
+  min-width: 2ch;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Prize pool number ── */
+.jackpot-amount {
+  font-family: var(--font-mono);
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
