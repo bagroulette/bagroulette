@@ -19,8 +19,6 @@ frontend/.vercel/
 *.json.key
 *treasury*.json
 /tmp/
-sign_and_send.js
-transfer_sol.js
 *.keypair
 
 # OS
