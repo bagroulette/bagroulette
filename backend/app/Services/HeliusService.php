@@ -66,6 +66,24 @@ class HeliusService
 
         Log::info('[Helius] Holders snapshot', ['count' => $holders->count(), 'mint' => $mint]);
 
+        $totalSupply = $holders->sum('balance');
+
+        // Known system wallets to exclude (Meteora DBC, bonding curve, AMM pools)
+        $blacklist = [
+            'FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM', // Meteora DBC Pool Authority
+            '7EPhYdcpMToxxoSdyYWyWD7VGA4tvTETWqXgfyzGSmuv', // Meteora DBC Pool
+            'DBCmgPfLKGhLEEPxTDFmJqRGPnCgBRPuJFJgFJaXMTnP',  // Bags bonding curve
+            'BAGSB9TpGrZxQbEsrEznv5jXXdwyP6AXerN8aVRiAmcv',  // Bags program
+        ];
+
+        $holders = $holders->filter(function ($h) use ($blacklist, $totalSupply) {
+            // Filter known system wallets
+            if (in_array($h['wallet'], $blacklist)) return false;
+            // Also filter any wallet holding more than 5% of supply
+            if ($totalSupply > 0 && ($h['balance'] / $totalSupply) > 0.05) return false;
+            return true;
+        });
+
         return $holders->sortByDesc('balance')->values();
     }
 
