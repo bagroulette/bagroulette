@@ -75,6 +75,23 @@ class RouletteService
             return;
         }
 
+        // Exclude wallets that won in the last 24 hours (cooldown)
+        $recentWinners = DrawResult::where('token_mint', $pool->token_mint)
+            ->where('drawn_at', '>=', now()->subHours(24))
+            ->pluck('winner_wallet')
+            ->toArray();
+
+        if (!empty($recentWinners)) {
+            $holders = $holders->filter(fn($h) => !in_array($h['wallet'], $recentWinners));
+            Log::info("[BagRoulette] Excluded " . count($recentWinners) . " recent winner(s) from draw");
+        }
+
+        if ($holders->isEmpty()) {
+            Log::info("[BagRoulette] All holders on cooldown for {$pool->token_mint}, skipping draw");
+            broadcast(new DrawSpinning(false, 0, $pool->token_mint));
+            return;
+        }
+
         // Provably fair seed = block_hash + timestamp + sorted holder list
         $blockHash    = $this->solana->getLatestBlockhash();
         $timestamp    = now()->timestamp;
